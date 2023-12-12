@@ -80,5 +80,5 @@ suspend inline fun <A : IApiService, reified RET : Any> A.remoteCall(params: Lis
         }
         return item
     }
-    throw Exception(response.status.description)
+    throw Exception(response.status.toString())
 }
