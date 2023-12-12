@@ -46,8 +46,8 @@ dependencies {
     implementation(platform("androidx.compose:compose-bom:2023.10.01"))
     implementation("androidx.compose.material3:material3")
     implementation("com.fonrouge.fsLib:fsLib:1.9.7")
-    implementation("com.google.android.gms:play-services-code-scanner:16.1.0")
     implementation("androidx.paging:paging-compose:3.2.1")
+    api("com.google.android.gms:play-services-code-scanner:16.1.0")
     /* replacement for pullRefresh that doesn't exist in Material3 */
     api("eu.bambooapps:compose-material3-pullrefresh:1.0.1")
 
