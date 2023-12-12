@@ -1,8 +1,9 @@
-package com.fonrouge.android.aLib.viewModel
+package com.fonrouge.android.aLib.domain
 
 import androidx.paging.PagingSource
 import androidx.paging.PagingState
-import com.fonrouge.android.aLib.domain.BaseViewModel
+import com.fonrouge.android.aLib.viewModel.BaseViewModel
+import com.fonrouge.fsLib.model.state.SimpleState
 import java.io.IOException
 
 class BasePagingSource<T : Any>(
@@ -27,7 +28,15 @@ class BasePagingSource<T : Any>(
                 nextKey = list.last_page?.let { if (nextPage < it) nextPage + 1 else null }
             )
         } catch (e: IOException) {
-            return LoadResult.Error(e)
+            viewModel.pushSimpleState(SimpleState(isOk = false, msgError = e.localizedMessage))
+//            return LoadResult.Error(e)
+            return LoadResult.Page(
+                data = listOf(),
+                prevKey = null,
+                nextKey = null,
+            )
+        } finally {
+            viewModel.refreshingList.value = false
         }
     }
 }

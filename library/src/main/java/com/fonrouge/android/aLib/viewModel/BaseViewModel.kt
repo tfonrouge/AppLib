@@ -1,4 +1,4 @@
-package com.fonrouge.android.aLib.domain
+package com.fonrouge.android.aLib.viewModel
 
 import androidx.compose.runtime.MutableIntState
 import androidx.compose.runtime.MutableState
@@ -12,9 +12,9 @@ import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
 import androidx.paging.cachedIn
+import com.fonrouge.android.aLib.domain.BasePagingSource
 import com.fonrouge.fsLib.model.state.ListState
 import com.fonrouge.fsLib.model.state.SimpleState
-import com.fonrouge.android.aLib.viewModel.BasePagingSource
 import com.google.mlkit.vision.codescanner.GmsBarcodeScannerOptions
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow

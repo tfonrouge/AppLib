@@ -4,7 +4,7 @@ import android.content.Context
 import android.media.ToneGenerator
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.platform.LocalContext
-import com.fonrouge.android.aLib.domain.BaseViewModel
+import com.fonrouge.android.aLib.viewModel.BaseViewModel
 import com.google.mlkit.vision.barcode.common.Barcode
 import com.google.mlkit.vision.codescanner.GmsBarcodeScanning
 

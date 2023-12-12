@@ -42,7 +42,7 @@ import androidx.paging.compose.LazyPagingItems
 import androidx.paging.compose.collectAsLazyPagingItems
 import androidx.paging.compose.itemContentType
 import androidx.paging.compose.itemKey
-import com.fonrouge.android.aLib.domain.BaseViewModel
+import com.fonrouge.android.aLib.viewModel.BaseViewModel
 import eu.bambooapps.material3.pullrefresh.PullRefreshIndicator
 import eu.bambooapps.material3.pullrefresh.PullRefreshState
 import eu.bambooapps.material3.pullrefresh.pullRefresh
@@ -50,7 +50,7 @@ import eu.bambooapps.material3.pullrefresh.rememberPullRefreshState
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun <T : Any> BodyScaffold(
+fun <T : Any> BodyList(
     paddingValues: PaddingValues? = null,
     viewModel: BaseViewModel<T>,
     pullRefreshState: PullRefreshState,
