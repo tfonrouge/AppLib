@@ -7,8 +7,8 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.ui.Modifier
+import com.fonrouge.android.aLib.domain.BaseViewModel
 import com.fonrouge.applib.ui.theme.AppLibTheme
-import com.fonrouge.library.domain.BaseViewModel
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
