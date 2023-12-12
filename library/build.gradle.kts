@@ -50,6 +50,8 @@ dependencies {
     api("com.google.android.gms:play-services-code-scanner:16.1.0")
     /* replacement for pullRefresh that doesn't exist in Material3 */
     api("eu.bambooapps:compose-material3-pullrefresh:1.0.1")
+    /* multi-button floating action button */
+    api("com.github.iamageo:MultiFab:1.0.6")
 
     testImplementation("junit:junit:4.13.2")
     androidTestImplementation("androidx.test.ext:junit:1.1.5")
