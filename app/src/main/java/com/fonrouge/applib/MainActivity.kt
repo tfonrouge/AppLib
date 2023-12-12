@@ -10,7 +10,7 @@ import androidx.compose.ui.Modifier
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import com.fonrouge.android.aLib.domain.BaseViewModel
+import com.fonrouge.android.aLib.viewModel.BaseViewModel
 import com.fonrouge.applib.screen.HomeScreen
 import com.fonrouge.applib.screen.NavDrawerAsSheetScreen
 import com.fonrouge.applib.ui.theme.AppLibTheme
@@ -20,7 +20,6 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
-            val viewModel: BaseViewModel<Int>
             AppLibTheme {
                 // A surface container using the 'background' color from the theme
                 Surface(
