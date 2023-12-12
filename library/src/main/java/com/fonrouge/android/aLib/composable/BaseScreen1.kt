@@ -59,9 +59,7 @@ fun <T : Any> BodyScaffold(
     Box(
         modifier = Modifier
             .pullRefresh(state = pullRefreshState)
-            .let { modifier1 ->
-                paddingValues?.let { modifier1.padding(it) } ?: modifier1
-            }
+            .let { modifier -> paddingValues?.let { modifier.padding(it) } ?: modifier }
     ) {
         val items: LazyPagingItems<T> = viewModel.flowPagingData.collectAsLazyPagingItems()
         PullRefreshIndicator(
@@ -102,14 +100,14 @@ fun <T : Any> ItemCard2(
 
 @Composable
 fun ItemCard(
-    onClick: (() -> Unit) = { },
+    onClick: (() -> Unit)? = null,
     content: @Composable ColumnScope.() -> Unit,
 ) {
     Card(
         modifier = Modifier
             .padding(bottom = 5.dp, top = 5.dp, start = 5.dp, end = 5.dp)
             .fillMaxWidth()
-            .clickable(onClick = onClick),
+            .let { modifier -> onClick?.let { modifier.clickable(onClick = it) } ?: modifier },
         shape = RoundedCornerShape(5.dp),
         elevation = CardDefaults.cardElevation(12.dp),
         content = content
