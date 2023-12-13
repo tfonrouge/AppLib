@@ -44,7 +44,7 @@ dependencies {
     implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.6.2")
     implementation("androidx.activity:activity-compose:1.8.1")
     implementation(platform("androidx.compose:compose-bom:2023.10.01"))
-    implementation("androidx.compose.material3:material3")
+    implementation("androidx.compose.material3:material3:1.1.2")
     implementation("com.fonrouge.fsLib:fsLib:2.0.0")
     implementation("androidx.paging:paging-compose:3.2.1")
     api("com.google.android.gms:play-services-code-scanner:16.1.0")
@@ -54,7 +54,7 @@ dependencies {
     api("com.github.iamageo:MultiFab:1.0.6")
 
     api("io.ktor:ktor-client-cio:2.3.7")
-    api("io.ktor:ktor-client-okhttp:2.3.6")
+    api("io.ktor:ktor-client-okhttp:2.3.7")
     api("io.ktor:ktor-client-auth:2.3.7")
     api("io.ktor:ktor-client-content-negotiation:2.3.7")
     api("io.ktor:ktor-serialization-kotlinx-json:2.3.7")
