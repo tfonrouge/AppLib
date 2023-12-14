@@ -2,12 +2,12 @@ package com.fonrouge.android.aLib.domain
 
 import androidx.paging.PagingSource
 import androidx.paging.PagingState
-import com.fonrouge.android.aLib.viewModel.BaseViewModel
+import com.fonrouge.android.aLib.viewModel.PagingDataViewModel
 import com.fonrouge.fsLib.model.state.SimpleState
 import java.io.IOException
 
 class BasePagingSource<T : Any>(
-    val viewModel: BaseViewModel<T>,
+    val viewModel: PagingDataViewModel<T>,
 ) : PagingSource<Int, T>() {
     override fun getRefreshKey(state: PagingState<Int, T>): Int? {
         return state.anchorPosition?.let {

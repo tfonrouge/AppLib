@@ -10,7 +10,6 @@ import androidx.compose.ui.Modifier
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import com.fonrouge.android.aLib.viewModel.BaseViewModel
 import com.fonrouge.applib.screen.HomeScreen
 import com.fonrouge.applib.screen.NavDrawerAsSheetScreen
 import com.fonrouge.applib.ui.theme.AppLibTheme
