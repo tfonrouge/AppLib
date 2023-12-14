@@ -5,18 +5,24 @@ import com.fonrouge.fsLib.apiServices.UserLogin
 import com.fonrouge.fsLib.model.base.ISysUser
 import com.fonrouge.fsLib.model.state.ItemState
 import com.fonrouge.fsLib.model.state.SimpleState
-import io.ktor.client.*
-import io.ktor.client.call.*
-import io.ktor.client.engine.okhttp.*
-import io.ktor.client.plugins.*
-import io.ktor.client.plugins.auth.*
-import io.ktor.client.plugins.contentnegotiation.*
-import io.ktor.client.plugins.cookies.*
-import io.ktor.client.plugins.logging.*
-import io.ktor.client.request.*
-import io.ktor.client.request.forms.*
-import io.ktor.http.*
-import io.ktor.serialization.kotlinx.json.*
+import io.ktor.client.HttpClient
+import io.ktor.client.call.body
+import io.ktor.client.engine.okhttp.OkHttp
+import io.ktor.client.plugins.DefaultRequest
+import io.ktor.client.plugins.HttpTimeout
+import io.ktor.client.plugins.UserAgent
+import io.ktor.client.plugins.auth.Auth
+import io.ktor.client.plugins.contentnegotiation.ContentNegotiation
+import io.ktor.client.plugins.cookies.HttpCookies
+import io.ktor.client.plugins.logging.LogLevel
+import io.ktor.client.plugins.logging.Logger
+import io.ktor.client.plugins.logging.Logging
+import io.ktor.client.request.forms.submitForm
+import io.ktor.client.request.get
+import io.ktor.http.ContentType
+import io.ktor.http.contentType
+import io.ktor.http.parameters
+import io.ktor.serialization.kotlinx.json.json
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
 
@@ -72,7 +78,10 @@ object AppApi {
         return serializedISysUser?.let { Json.decodeFromString(it) }
     }
 
-    suspend inline fun <reified T : ISysUser> loginForm(loginUrl: String, userLogin: UserLogin): ItemState<T> {
+    suspend inline fun <reified T : ISysUser> loginForm(
+        loginUrl: String,
+        userLogin: UserLogin
+    ): ItemState<T> {
         serializedISysUser = null
         val httpResponse = try {
             client.submitForm(
