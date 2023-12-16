@@ -53,6 +53,7 @@ import com.google.mlkit.vision.barcode.common.Barcode
 fun CameraXCoreReaderScreen1(
     cameraViewModel: CameraViewModel,
     onReadBarcode: (Barcode) -> Unit = {},
+    onFilter: ((Barcode) -> Boolean)?,
     content: @Composable () -> Unit
 ) {
     val cameraPermissionState = rememberPermissionState(permission = Manifest.permission.CAMERA)
@@ -61,6 +62,7 @@ fun CameraXCoreReaderScreen1(
             MainContent(
                 viewModel = cameraViewModel,
                 onReadBarcode = onReadBarcode,
+                onFilter = onFilter,
             )
         } else {
             content()
@@ -75,6 +77,7 @@ fun CameraXCoreReaderScreen1(
 private fun MainContent(
     viewModel: CameraViewModel = CameraViewModel(),
     onReadBarcode: (Barcode) -> Unit = {},
+    onFilter: ((Barcode) -> Boolean)?,
 ) {
     val barcodeCamera by remember { mutableStateOf(BarcodeCamera()) }
     var torch by remember { mutableStateOf(false) }
@@ -129,7 +132,7 @@ private fun MainContent(
                             )
                         }
                 ) {
-                    barcodeCamera.CameraPreview(viewModel, onReadBarcode)
+                    barcodeCamera.CameraPreview(viewModel, onReadBarcode, onFilter)
                     Column(
                         modifier = Modifier.fillMaxWidth(),
                         horizontalAlignment = Alignment.CenterHorizontally,

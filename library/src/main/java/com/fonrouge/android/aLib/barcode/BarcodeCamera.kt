@@ -44,6 +44,7 @@ class BarcodeCamera {
     fun CameraPreview(
         viewModel: CameraViewModel,
         onReadBarcode: (Barcode) -> Unit,
+        onFilter: ((Barcode) -> Boolean)?,
     ) {
         val lifecycleOwner = LocalLifecycleOwner.current
         rememberCoroutineScope()
@@ -72,6 +73,7 @@ class BarcodeCamera {
                                 imageCapture = imageCapture,
                                 lifecycleOwner = lifecycleOwner,
                                 onReadBarcode = onReadBarcode,
+                                onFilter = onFilter,
                                 viewModel = viewModel,
                             )
                         },
@@ -88,6 +90,7 @@ class BarcodeCamera {
         lifecycleOwner: LifecycleOwner,
         imageCapture: ImageCapture,
         onReadBarcode: (Barcode) -> Unit,
+        onFilter: ((Barcode) -> Boolean)?,
         viewModel: CameraViewModel
     ) {
         val cameraProviderFuture = ProcessCameraProvider.getInstance(context)
@@ -132,6 +135,7 @@ class BarcodeCamera {
                     barcodeScanner = scanner,
                     imageProxy = imageProxy,
                     onReadBarcode = onReadBarcode,
+                    onFilter = onFilter,
                     viewModel = viewModel,
                 )
             }
@@ -165,6 +169,7 @@ class BarcodeCamera {
         barcodeScanner: BarcodeScanner,
         imageProxy: ImageProxy,
         onReadBarcode: (Barcode) -> Unit,
+        onFilter: ((Barcode) -> Boolean)?,
         viewModel: CameraViewModel
     ) {
         imageProxy.image?.let { image ->
@@ -178,10 +183,12 @@ class BarcodeCamera {
                     if (task.isSuccessful) {
                         task.result?.getOrNull(0)?.let { barcode ->
                             if (viewModel.uiState.value.scannerOpen) {
-                                if (!barcode.displayValue.isNullOrEmpty() && (System.currentTimeMillis() - viewModel.lastTime) > 500L) {
-                                    onReadBarcode(barcode)
-                                    viewModel.onEvent(CameraViewModel.UIEvent.CodeRead(barcode.displayValue))
-                                    viewModel.onEvent(CameraViewModel.UIEvent.Close)
+                                if (onFilter == null || onFilter(barcode)) {
+                                    if (!barcode.displayValue.isNullOrEmpty() && (System.currentTimeMillis() - viewModel.lastTime) > 500L) {
+                                        onReadBarcode(barcode)
+                                        viewModel.onEvent(CameraViewModel.UIEvent.CodeRead(barcode.displayValue))
+                                        viewModel.onEvent(CameraViewModel.UIEvent.Close)
+                                    }
                                 }
                             }
                         }

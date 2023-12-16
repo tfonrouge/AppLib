@@ -9,6 +9,7 @@ import com.google.mlkit.vision.barcode.common.Barcode
 fun ReadBarcodeScreen(
     cameraViewModel: CameraViewModel,
     onReadBarcode: (Barcode) -> Unit = {},
+    onFilter: ((Barcode) -> Boolean)? = null,
     content: @Composable () -> Unit,
 ) {
     when (AppApi.cameraType) {
@@ -24,6 +25,7 @@ fun ReadBarcodeScreen(
             CameraXCoreReaderScreen1(
                 cameraViewModel = cameraViewModel,
                 onReadBarcode = onReadBarcode,
+                onFilter = onFilter,
                 content = content
             )
         }
