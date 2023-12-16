@@ -10,8 +10,9 @@ import androidx.compose.ui.Modifier
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import com.fonrouge.applib.screen.HomeScreen
-import com.fonrouge.applib.screen.NavDrawerAsSheetScreen
+import com.fonrouge.applib.ui.BarcodeReaderScreen1
+import com.fonrouge.applib.ui.HomeScreen
+import com.fonrouge.applib.ui.NavDrawerAsSheetScreen
 import com.fonrouge.applib.ui.theme.AppLibTheme
 import com.fonrouge.applib.ui.theme.Routes
 
@@ -35,6 +36,9 @@ class MainActivity : ComponentActivity() {
                         }
                         composable(Routes.NavDrawerAsSheetScreen.destination) {
                             NavDrawerAsSheetScreen(navHostController = navHostController)
+                        }
+                        composable(Routes.BarcodeReeaderScreen1.destination) {
+                            BarcodeReaderScreen1()
                         }
                     }
                 }

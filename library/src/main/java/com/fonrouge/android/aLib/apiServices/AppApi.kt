@@ -1,6 +1,7 @@
 package com.fonrouge.android.aLib.apiServices
 
 import android.util.Log
+import com.fonrouge.android.aLib.viewModel.CameraViewModel
 import com.fonrouge.fsLib.apiServices.UserLogin
 import com.fonrouge.fsLib.model.base.ISysUser
 import com.fonrouge.fsLib.model.state.ItemState
@@ -33,6 +34,7 @@ object AppApi {
     var appRoute: String = "appRoute"
     var userAgent: String = "AppAndroid"
     var serializedISysUser: String? = null
+    var cameraType: CameraViewModel.CameraType = CameraViewModel.CameraType.GooglePlay
     private var _httpClient: HttpClient? = null
     val client: HttpClient
         get() {

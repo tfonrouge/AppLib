@@ -44,14 +44,29 @@ dependencies {
     implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.6.2")
     implementation("androidx.activity:activity-compose:1.8.1")
     implementation(platform("androidx.compose:compose-bom:2023.10.01"))
+    implementation("androidx.compose.ui:ui")
+    implementation("androidx.compose.ui:ui-graphics")
+    implementation("androidx.compose.ui:ui-tooling-preview")
     implementation("androidx.compose.material3:material3:1.1.2")
+    implementation("androidx.compose.material:material-icons-extended:1.5.4")
     implementation("com.fonrouge.fsLib:fsLib:2.0.0")
     implementation("androidx.paging:paging-compose:3.2.1")
+    /* scanner service provided by Google Play */
     api("com.google.android.gms:play-services-code-scanner:16.1.0")
+    /* camerax */
+    val camerax_version = "1.4.0-alpha03"
+    api("androidx.camera:camera-camera2:$camerax_version")
+    implementation("androidx.camera:camera-lifecycle:$camerax_version")
+    api("androidx.camera:camera-view:$camerax_version")
+    /* ML Kit */
+    api("com.google.mlkit:barcode-scanning:17.2.0")
+    /* permission*/
+    api("com.google.accompanist:accompanist-permissions:0.32.0")
     /* replacement for pullRefresh that doesn't exist in Material3 */
     api("eu.bambooapps:compose-material3-pullrefresh:1.0.1")
     /* multi-button floating action button */
     api("com.github.iamageo:MultiFab:1.0.6")
+//    api("androidx.constraintlayout:constraintlayout-compose:1.0.1")
 
     api("io.ktor:ktor-client-cio:2.3.7")
     api("io.ktor:ktor-client-okhttp:2.3.7")

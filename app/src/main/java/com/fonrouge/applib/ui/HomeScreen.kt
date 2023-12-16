@@ -1,4 +1,4 @@
-package com.fonrouge.applib.screen
+package com.fonrouge.applib.ui
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -53,6 +53,9 @@ fun HomeScreen(
         ) {
             Button(onClick = { navHostController.navigate(Routes.NavDrawerAsSheetScreen.destination) }) {
                 Text(text = "${Routes.NavDrawerAsSheetScreen}")
+            }
+            Button(onClick = { navHostController.navigate(Routes.BarcodeReeaderScreen1.destination) }) {
+                Text(text = "${Routes.BarcodeReeaderScreen1}")
             }
         }
     }

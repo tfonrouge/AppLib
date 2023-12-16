@@ -1,4 +1,4 @@
-package com.fonrouge.applib.screen
+package com.fonrouge.applib.ui
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
