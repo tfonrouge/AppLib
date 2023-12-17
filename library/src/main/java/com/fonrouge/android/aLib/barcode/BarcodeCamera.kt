@@ -200,6 +200,7 @@ class BarcodeCamera {
         }
     }
 
+    @Suppress("unused")
     fun takePhoto(
         context: Context,
         imageCapture: ImageCapture,
