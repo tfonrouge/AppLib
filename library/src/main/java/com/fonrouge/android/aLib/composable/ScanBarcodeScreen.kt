@@ -6,7 +6,7 @@ import com.fonrouge.android.aLib.viewModel.CameraViewModel
 import com.google.mlkit.vision.barcode.common.Barcode
 
 @Composable
-fun ReadBarcodeScreen(
+fun ScanBarcodeScreen(
     cameraViewModel: CameraViewModel,
     onReadBarcode: (Barcode) -> Unit = {},
     onFilter: ((Barcode) -> Boolean)? = null,

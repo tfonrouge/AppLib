@@ -44,7 +44,7 @@ class BarcodeCamera {
     fun CameraPreview(
         viewModel: CameraViewModel,
         onReadBarcode: (Barcode) -> Unit,
-        onFilter: ((Barcode) -> Boolean)?,
+        onFilter: ((Barcode) -> Boolean)? = null,
     ) {
         val lifecycleOwner = LocalLifecycleOwner.current
         rememberCoroutineScope()
@@ -90,7 +90,7 @@ class BarcodeCamera {
         lifecycleOwner: LifecycleOwner,
         imageCapture: ImageCapture,
         onReadBarcode: (Barcode) -> Unit,
-        onFilter: ((Barcode) -> Boolean)?,
+        onFilter: ((Barcode) -> Boolean)? = null,
         viewModel: CameraViewModel
     ) {
         val cameraProviderFuture = ProcessCameraProvider.getInstance(context)
@@ -169,7 +169,7 @@ class BarcodeCamera {
         barcodeScanner: BarcodeScanner,
         imageProxy: ImageProxy,
         onReadBarcode: (Barcode) -> Unit,
-        onFilter: ((Barcode) -> Boolean)?,
+        onFilter: ((Barcode) -> Boolean)? = null,
         viewModel: CameraViewModel
     ) {
         imageProxy.image?.let { image ->

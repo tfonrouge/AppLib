@@ -30,23 +30,23 @@ fun BarcodeReaderScreen1(
             Log.d(ContentValues.TAG, "SCANNER 1: ${it.displayValue}")
         }
     ) {
-        Column(
-            modifier = Modifier
-                .fillMaxSize(),
-            verticalArrangement = Arrangement.Center,
-            horizontalAlignment = Alignment.CenterHorizontally,
-        ) {
-            val state by cameraViewModel.uiState.collectAsState(null)
-            Button(onClick = { cameraViewModel.onEvent(CameraViewModel.UIEvent.Open) }) {
-                Text(text = "Scan ...", style = MaterialTheme.typography.titleLarge)
-            }
-            if (!state?.codeScanned.isNullOrEmpty()) {
-                Spacer(modifier = Modifier.size(20.dp))
-                Text(
-                    text = "Code read: ${state?.codeScanned}",
-                    style = MaterialTheme.typography.labelMedium
-                )
-            }
+    }
+    Column(
+        modifier = Modifier
+            .fillMaxSize(),
+        verticalArrangement = Arrangement.Center,
+        horizontalAlignment = Alignment.CenterHorizontally,
+    ) {
+        val state by cameraViewModel.uiState.collectAsState(null)
+        Button(onClick = { cameraViewModel.onEvent(CameraViewModel.UIEvent.Open) }) {
+            Text(text = "Scan ...", style = MaterialTheme.typography.titleLarge)
+        }
+        if (!state?.codeScanned.isNullOrEmpty()) {
+            Spacer(modifier = Modifier.size(20.dp))
+            Text(
+                text = "Code read: ${state?.codeScanned}",
+                style = MaterialTheme.typography.labelMedium
+            )
         }
     }
 }

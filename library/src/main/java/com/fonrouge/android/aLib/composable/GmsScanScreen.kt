@@ -19,8 +19,8 @@ fun GmsScanScreen(
     content: @Composable () -> Unit,
 ) {
     if (cameraViewModel.uiState.collectAsState().value.scannerOpen) {
-        val scanner =
-            GmsBarcodeScanning.getClient(context, cameraViewModel.gmsBarcodeScannerOptions)
+        val scanner = GmsBarcodeScanning
+            .getClient(context, cameraViewModel.gmsBarcodeScannerOptions)
         scanner.startScan()
             .addOnSuccessListener { barcode: Barcode ->
                 ToneGenerator(0, ToneGenerator.MAX_VOLUME).startTone(ToneGenerator.TONE_PROP_PROMPT)
