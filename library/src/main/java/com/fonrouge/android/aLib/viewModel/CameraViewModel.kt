@@ -45,6 +45,7 @@ class CameraViewModel : ViewModel() {
         when (uiEvent) {
             UIEvent.Open -> _uiState.value = _uiState.value.copy(scannerOpen = true)
             UIEvent.Close -> {
+                barcodeCamera.value.toggleFlash(false)
                 torchState.value = false
                 _uiState.value = _uiState.value.copy(scannerOpen = false)
             }
