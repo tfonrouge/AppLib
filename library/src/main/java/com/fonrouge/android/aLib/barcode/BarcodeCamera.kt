@@ -185,6 +185,7 @@ class BarcodeCamera {
                             if (viewModel.uiState.value.scannerOpen) {
                                 if (onFilter == null || onFilter(barcode)) {
                                     if (!barcode.displayValue.isNullOrEmpty() && (System.currentTimeMillis() - viewModel.lastTime) > 500L) {
+                                        toggleFlash(false)
                                         onReadBarcode(barcode)
                                         viewModel.onEvent(CameraViewModel.UIEvent.CodeRead(barcode.displayValue))
                                         viewModel.onEvent(CameraViewModel.UIEvent.Close)
