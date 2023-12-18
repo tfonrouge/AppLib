@@ -10,6 +10,7 @@ import androidx.compose.ui.Modifier
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.fonrouge.android.aLib.viewModel.CameraViewModel
 import com.fonrouge.applib.ui.BarcodeReaderScreen1
 import com.fonrouge.applib.ui.HomeScreen
 import com.fonrouge.applib.ui.NavDrawerAsSheetScreen
@@ -44,5 +45,6 @@ class MainActivity : ComponentActivity() {
                 }
             }
         }
+        CameraViewModel.onSelectCameraType = { CameraViewModel.CameraType.CameraX }
     }
 }

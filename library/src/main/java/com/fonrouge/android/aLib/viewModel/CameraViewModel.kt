@@ -1,6 +1,8 @@
 package com.fonrouge.android.aLib.viewModel
 
 import android.media.ToneGenerator
+import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import com.google.mlkit.vision.codescanner.GmsBarcodeScannerOptions
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -8,8 +10,16 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.serialization.Serializable
 
 class CameraViewModel : ViewModel() {
+
+    companion object {
+        var onSelectCameraType: () -> CameraType = {
+            CameraType.GooglePlay
+        }
+    }
+
     private val _uiState = MutableStateFlow(State())
     val uiState = _uiState.asStateFlow()
+    val selectedCameraType: MutableState<CameraType> = mutableStateOf(onSelectCameraType())
     var lastTime: Long = 0L
 
     val gmsBarcodeScannerOptions by lazy {

@@ -42,7 +42,7 @@ android {
 dependencies {
     implementation("androidx.core:core-ktx:1.12.0")
     implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.6.2")
-    implementation("androidx.activity:activity-compose:1.8.1")
+    implementation("androidx.activity:activity-compose:1.8.2")
     implementation(platform("androidx.compose:compose-bom:2023.10.01"))
     implementation("androidx.compose.ui:ui")
     implementation("androidx.compose.ui:ui-graphics")
@@ -52,33 +52,35 @@ dependencies {
     implementation("com.fonrouge.fsLib:fsLib:2.0.0")
     implementation("androidx.paging:paging-compose:3.2.1")
     /* scanner service provided by Google Play */
-    api("com.google.android.gms:play-services-code-scanner:16.1.0")
+    implementation("com.google.android.gms:play-services-code-scanner:16.1.0")
+    implementation("androidx.lifecycle:lifecycle-viewmodel-compose:2.6.2")
     /* camerax */
-    val camerax_version = "1.4.0-alpha03"
-    api("androidx.camera:camera-camera2:$camerax_version")
-    implementation("androidx.camera:camera-lifecycle:$camerax_version")
-    api("androidx.camera:camera-view:$camerax_version")
+    val cameraxVersion = "1.4.0-alpha03"
+    implementation("androidx.camera:camera-camera2:$cameraxVersion")
+    implementation("androidx.camera:camera-lifecycle:$cameraxVersion")
+    implementation("androidx.camera:camera-view:$cameraxVersion")
     /* ML Kit */
-    api("com.google.mlkit:barcode-scanning:17.2.0")
+    implementation("com.google.mlkit:barcode-scanning:17.2.0")
     /* permission*/
-    api("com.google.accompanist:accompanist-permissions:0.32.0")
+    implementation("com.google.accompanist:accompanist-permissions:0.32.0")
     /* replacement for pullRefresh that doesn't exist in Material3 */
-    api("eu.bambooapps:compose-material3-pullrefresh:1.0.1")
+    implementation("eu.bambooapps:compose-material3-pullrefresh:1.0.1")
     /* multi-button floating action button */
-    api("com.github.iamageo:MultiFab:1.0.6")
+    implementation("com.github.iamageo:MultiFab:1.0.6")
 //    api("androidx.constraintlayout:constraintlayout-compose:1.0.1")
 
-    api("io.ktor:ktor-client-cio:2.3.7")
-    api("io.ktor:ktor-client-okhttp:2.3.7")
-    api("io.ktor:ktor-client-auth:2.3.7")
-    api("io.ktor:ktor-client-content-negotiation:2.3.7")
-    api("io.ktor:ktor-serialization-kotlinx-json:2.3.7")
-    api("io.ktor:ktor-client-serialization:2.3.7")
-    api("io.ktor:ktor-client-logging:2.3.7")
+    implementation("io.ktor:ktor-client-cio:2.3.7")
+    implementation("io.ktor:ktor-client-okhttp:2.3.7")
+    implementation("io.ktor:ktor-client-auth:2.3.7")
+    implementation("io.ktor:ktor-client-content-negotiation:2.3.7")
+    implementation("io.ktor:ktor-serialization-kotlinx-json:2.3.7")
+    implementation("io.ktor:ktor-client-serialization:2.3.7")
+    implementation("io.ktor:ktor-client-logging:2.3.7")
 
     testImplementation("junit:junit:4.13.2")
     androidTestImplementation("androidx.test.ext:junit:1.1.5")
     androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
+    debugImplementation("androidx.compose.ui:ui-tooling:1.5.4")
 }
 
 publishing {
