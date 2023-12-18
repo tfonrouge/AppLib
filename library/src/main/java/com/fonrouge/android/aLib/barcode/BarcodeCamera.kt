@@ -40,14 +40,15 @@ class BarcodeCamera {
 
     private var camera: Camera? = null
 
+    val torchState: Boolean get() = camera?.cameraInfo?.torchState?.value?.let { it != 0 } ?: false
+
     @Composable
     fun CameraPreview(
-        viewModel: CameraViewModel,
+        cameraViewModel: CameraViewModel,
         onReadBarcode: (Barcode) -> Unit,
         onFilter: ((Barcode) -> Boolean)? = null,
     ) {
         val lifecycleOwner = LocalLifecycleOwner.current
-        rememberCoroutineScope()
         val imageCapture = remember {
             ImageCapture
                 .Builder()
@@ -74,7 +75,7 @@ class BarcodeCamera {
                                 lifecycleOwner = lifecycleOwner,
                                 onReadBarcode = onReadBarcode,
                                 onFilter = onFilter,
-                                viewModel = viewModel,
+                                cameraViewModel = cameraViewModel,
                             )
                         },
                         ContextCompat.getMainExecutor(context)
@@ -91,7 +92,7 @@ class BarcodeCamera {
         imageCapture: ImageCapture,
         onReadBarcode: (Barcode) -> Unit,
         onFilter: ((Barcode) -> Boolean)? = null,
-        viewModel: CameraViewModel
+        cameraViewModel: CameraViewModel
     ) {
         val cameraProviderFuture = ProcessCameraProvider.getInstance(context)
 
@@ -136,7 +137,7 @@ class BarcodeCamera {
                     imageProxy = imageProxy,
                     onReadBarcode = onReadBarcode,
                     onFilter = onFilter,
-                    viewModel = viewModel,
+                    viewModel = cameraViewModel,
                 )
             }
 
@@ -155,6 +156,8 @@ class BarcodeCamera {
             } catch (exc: Exception) {
                 Log.e(TAG, "Use case binding failed", exc)
             }
+
+            camera?.cameraControl?.enableTorch(cameraViewModel.torchState.value)
 
         }, ContextCompat.getMainExecutor(context))
     }

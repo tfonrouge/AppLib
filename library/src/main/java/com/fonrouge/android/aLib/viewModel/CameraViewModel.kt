@@ -1,14 +1,17 @@
 package com.fonrouge.android.aLib.viewModel
 
 import android.media.ToneGenerator
+import androidx.camera.core.ExperimentalGetImage
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
+import com.fonrouge.android.aLib.barcode.BarcodeCamera
 import com.google.mlkit.vision.codescanner.GmsBarcodeScannerOptions
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.serialization.Serializable
 
+@ExperimentalGetImage
 class CameraViewModel : ViewModel() {
 
     companion object {
@@ -29,6 +32,10 @@ class CameraViewModel : ViewModel() {
             .build()
     }
 
+    val barcodeCamera = mutableStateOf(BarcodeCamera())
+
+    val torchState = mutableStateOf(false)
+
     data class State(
         val scannerOpen: Boolean = false,
         val codeScanned: String? = null,
@@ -37,7 +44,10 @@ class CameraViewModel : ViewModel() {
     fun onEvent(uiEvent: UIEvent) {
         when (uiEvent) {
             UIEvent.Open -> _uiState.value = _uiState.value.copy(scannerOpen = true)
-            UIEvent.Close -> _uiState.value = _uiState.value.copy(scannerOpen = false)
+            UIEvent.Close -> {
+                torchState.value = false
+                _uiState.value = _uiState.value.copy(scannerOpen = false)
+            }
             is UIEvent.CodeRead -> {
                 _uiState.value = _uiState.value.copy(codeScanned = uiEvent.codeScanned)
                 lastTime = System.currentTimeMillis()

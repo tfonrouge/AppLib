@@ -1,6 +1,7 @@
 package com.fonrouge.android.aLib.composable
 
 import android.Manifest
+import android.util.Log
 import androidx.camera.core.ExperimentalGetImage
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -19,10 +20,6 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.drawWithContent
@@ -37,7 +34,6 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.zIndex
 import androidx.lifecycle.viewmodel.compose.viewModel
-import com.fonrouge.android.aLib.barcode.BarcodeCamera
 import com.fonrouge.android.aLib.viewModel.CameraViewModel
 import com.fonrouge.library.R
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
@@ -58,11 +54,12 @@ fun CameraXCoreReaderScreen1(
     if (cameraPermissionState.status.isGranted) {
         if (cameraViewModel.uiState.collectAsState().value.scannerOpen) {
             MainContent(
-                viewModel = cameraViewModel,
+                cameraViewModel = cameraViewModel,
                 onReadBarcode = onReadBarcode,
                 onFilter = onFilter,
             )
         } else {
+            cameraViewModel.barcodeCamera.value.toggleFlash(false)
             content()
         }
     } else {
@@ -73,12 +70,11 @@ fun CameraXCoreReaderScreen1(
 @androidx.annotation.OptIn(ExperimentalGetImage::class)
 @Composable
 private fun MainContent(
-    viewModel: CameraViewModel = CameraViewModel(),
+    cameraViewModel: CameraViewModel,
     onReadBarcode: (Barcode) -> Unit = {},
+
     onFilter: ((Barcode) -> Boolean)? = null,
 ) {
-    val barcodeCamera by remember { mutableStateOf(BarcodeCamera()) }
-    var torch by remember { mutableStateOf(false) }
     Box {
         Box(
             modifier = Modifier
@@ -126,7 +122,11 @@ private fun MainContent(
                         )
                     }
             ) {
-                barcodeCamera.CameraPreview(viewModel, onReadBarcode, onFilter)
+                cameraViewModel.barcodeCamera.value.CameraPreview(
+                    cameraViewModel,
+                    onReadBarcode,
+                    onFilter
+                )
                 /*
                                 Column(
                                     modifier = Modifier.fillMaxWidth(),
@@ -166,7 +166,12 @@ private fun MainContent(
         verticalAlignment = Alignment.Top,
     ) {
         IconButton(
-            onClick = { viewModel.onEvent(CameraViewModel.UIEvent.Close) }
+            onClick = {
+                cameraViewModel.torchState.value = false
+                cameraViewModel.barcodeCamera.value.toggleFlash(false)
+                Log.d("TORCH 2", cameraViewModel.barcodeCamera.value.torchState.toString())
+                cameraViewModel.onEvent(CameraViewModel.UIEvent.Close)
+            }
         ) {
             Icon(
                 imageVector = Icons.Default.Close,
@@ -181,17 +186,19 @@ private fun MainContent(
         )
         IconButton(
             onClick = {
-                torch = !torch
-                barcodeCamera.toggleFlash(torch)
+                cameraViewModel.torchState.value = !cameraViewModel.torchState.value
+                cameraViewModel.barcodeCamera.value.toggleFlash(cameraViewModel.torchState.value)
+                Log.d("TORCH", cameraViewModel.barcodeCamera.value.torchState.toString())
             }
         ) {
             Icon(
                 painter = painterResource(id = R.drawable.ic_torch),
                 contentDescription = null,
-                tint = if (torch) Color.Yellow else Color.White
+                tint = if (cameraViewModel.torchState.value) Color.Yellow else Color.White
             )
         }
     }
+    cameraViewModel.barcodeCamera.value.toggleFlash(cameraViewModel.torchState.value)
 }
 
 @Preview
