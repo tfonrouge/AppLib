@@ -60,13 +60,13 @@ dependencies {
     implementation("androidx.camera:camera-lifecycle:$cameraxVersion")
     implementation("androidx.camera:camera-view:$cameraxVersion")
     /* ML Kit */
-    implementation("com.google.mlkit:barcode-scanning:17.2.0")
+    api("com.google.mlkit:barcode-scanning:17.2.0")
     /* permission*/
     implementation("com.google.accompanist:accompanist-permissions:0.32.0")
     /* replacement for pullRefresh that doesn't exist in Material3 */
-    implementation("eu.bambooapps:compose-material3-pullrefresh:1.0.1")
+    api("eu.bambooapps:compose-material3-pullrefresh:1.0.1")
     /* multi-button floating action button */
-    implementation("com.github.iamageo:MultiFab:1.0.6")
+    api("com.github.iamageo:MultiFab:1.0.6")
 //    api("androidx.constraintlayout:constraintlayout-compose:1.0.1")
 
     implementation("io.ktor:ktor-client-cio:2.3.7")
