@@ -4,6 +4,8 @@ plugins {
     `maven-publish`
 }
 
+val aLibVersion = rootProject.property("aLibVersion")
+
 android {
     namespace = "com.fonrouge.library"
     compileSdk = 34
@@ -88,7 +90,7 @@ publishing {
         register<MavenPublication>("release") {
             groupId = "com.fonrouge.android"
             artifactId = "aLib"
-            version = "1.0.0"
+            version = "$aLibVersion"
 
             afterEvaluate {
                 from(components["release"])
