@@ -52,7 +52,7 @@ dependencies {
     implementation("androidx.compose.ui:ui-tooling-preview")
     implementation("androidx.compose.material3:material3:1.1.2")
     implementation("androidx.compose.material:material-icons-extended:1.5.4")
-    implementation("com.fonrouge.fsLib:fsLib:2.0.0")
+    implementation("com.fonrouge.fsLib:fsLib:2.1.0")
     implementation("androidx.paging:paging-compose:3.2.1")
     /* scanner service provided by Google Play */
     implementation("com.google.android.gms:play-services-code-scanner:16.1.0")

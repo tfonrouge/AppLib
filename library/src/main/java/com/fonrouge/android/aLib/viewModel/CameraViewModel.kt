@@ -15,14 +15,12 @@ import kotlinx.serialization.Serializable
 class CameraViewModel : ViewModel() {
 
     companion object {
-        var onSelectCameraType: () -> CameraType = {
-            CameraType.GooglePlay
-        }
+        var defaultCameraType: CameraType = CameraType.GooglePlay
     }
 
     private val _uiState = MutableStateFlow(State())
     val uiState = _uiState.asStateFlow()
-    val selectedCameraType: MutableState<CameraType> = mutableStateOf(onSelectCameraType())
+    val selectedCameraType: MutableState<CameraType> = mutableStateOf(defaultCameraType)
     var lastTime: Long = 0L
 
     val gmsBarcodeScannerOptions by lazy {
@@ -49,6 +47,7 @@ class CameraViewModel : ViewModel() {
                 torchState.value = false
                 _uiState.value = _uiState.value.copy(scannerOpen = false)
             }
+
             is UIEvent.CodeRead -> {
                 _uiState.value = _uiState.value.copy(codeScanned = uiEvent.codeScanned)
                 lastTime = System.currentTimeMillis()

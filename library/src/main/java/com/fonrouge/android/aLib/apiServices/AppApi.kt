@@ -1,9 +1,9 @@
 package com.fonrouge.android.aLib.apiServices
 
 import android.util.Log
-import com.fonrouge.android.aLib.viewModel.CameraViewModel
+import androidx.camera.core.ExperimentalGetImage
 import com.fonrouge.fsLib.apiServices.UserLogin
-import com.fonrouge.fsLib.model.base.ISysUser
+import com.fonrouge.fsLib.model.base.IUser
 import com.fonrouge.fsLib.model.state.ItemState
 import com.fonrouge.fsLib.model.state.SimpleState
 import io.ktor.client.HttpClient
@@ -27,14 +27,13 @@ import io.ktor.serialization.kotlinx.json.json
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
 
-@Suppress("unused")
+@ExperimentalGetImage
 object AppApi {
     var version: String = "0.0"
     var urlBase: String = "localhost"
     var appRoute: String = "appRoute"
     var userAgent: String = "AppAndroid"
     var serializedISysUser: String? = null
-    var cameraType: CameraViewModel.CameraType = CameraViewModel.CameraType.GooglePlay
     private var _httpClient: HttpClient? = null
     val client: HttpClient
         get() {
@@ -76,11 +75,11 @@ object AppApi {
         _httpClient = null
     }
 
-    inline fun <reified T : ISysUser> getISysUser(): T? {
+    inline fun <reified T : IUser<*>> getUser(): T? {
         return serializedISysUser?.let { Json.decodeFromString(it) }
     }
 
-    suspend inline fun <reified T : ISysUser> loginForm(
+    suspend inline fun <reified T : IUser<*>> loginForm(
         loginUrl: String,
         userLogin: UserLogin
     ): ItemState<T> {
