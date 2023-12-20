@@ -33,7 +33,7 @@ object AppApi {
     var urlBase: String = "localhost"
     var appRoute: String = "appRoute"
     var userAgent: String = "AppAndroid"
-    var serializedISysUser: String? = null
+    var serializedIUser: String? = null
     private var _httpClient: HttpClient? = null
     val client: HttpClient
         get() {
@@ -68,7 +68,7 @@ object AppApi {
             return _httpClient!!
         }
 
-    val logged get() = serializedISysUser != null
+    val logged get() = serializedIUser != null
 
     fun clearHttpClient() {
         _httpClient?.close()
@@ -76,14 +76,14 @@ object AppApi {
     }
 
     inline fun <reified T : IUser<*>> getUser(): T? {
-        return serializedISysUser?.let { Json.decodeFromString(it) }
+        return serializedIUser?.let { Json.decodeFromString(it) }
     }
 
     suspend inline fun <reified T : IUser<*>> loginForm(
         loginUrl: String,
         userLogin: UserLogin
     ): ItemState<T> {
-        serializedISysUser = null
+        serializedIUser = null
         val httpResponse = try {
             client.submitForm(
                 url = "$urlBase/$loginUrl",
@@ -97,7 +97,7 @@ object AppApi {
         }
         val itemState = try {
             ItemState(item = httpResponse.body<T>()).also {
-                serializedISysUser = Json.encodeToString(it.item)
+                serializedIUser = Json.encodeToString(it.item)
             }
         } catch (e: Exception) {
             ItemState(isOk = false, msgError = e.message)
@@ -106,7 +106,7 @@ object AppApi {
     }
 
     suspend fun logout(logoutUrl: String = "/logout"): SimpleState {
-        serializedISysUser = null
+        serializedIUser = null
         return try {
             clearHttpClient()
             client.get("$urlBase/$logoutUrl")
