@@ -44,6 +44,7 @@ import androidx.paging.compose.itemContentType
 import androidx.paging.compose.itemKey
 import com.fonrouge.android.aLib.viewModel.BaseViewModel
 import com.fonrouge.android.aLib.viewModel.PagingDataViewModel
+import com.fonrouge.fsLib.model.base.BaseDoc
 import eu.bambooapps.material3.pullrefresh.PullRefreshIndicator
 import eu.bambooapps.material3.pullrefresh.PullRefreshState
 import eu.bambooapps.material3.pullrefresh.pullRefresh
@@ -51,9 +52,9 @@ import eu.bambooapps.material3.pullrefresh.rememberPullRefreshState
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun <T : Any> BodyList(
+fun <T : BaseDoc<*>> BodyList(
     paddingValues: PaddingValues? = null,
-    viewModel: PagingDataViewModel<T>,
+    viewModel: PagingDataViewModel<T, *>,
     pullRefreshState: PullRefreshState,
     content: @Composable (T?) -> Unit
 ) {
@@ -182,7 +183,7 @@ fun <T : Any> snackbarHostState(viewModel: BaseViewModel<T>): SnackbarHostState 
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun <T : Any> pullRefreshState(viewModel: PagingDataViewModel<T>): PullRefreshState {
+fun <T : BaseDoc<*>> pullRefreshState(viewModel: PagingDataViewModel<T, *>): PullRefreshState {
     return rememberPullRefreshState(
         refreshing = viewModel.refreshingList.value,
         onRefresh = {
