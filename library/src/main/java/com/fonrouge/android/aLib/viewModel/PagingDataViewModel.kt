@@ -44,7 +44,7 @@ abstract class PagingDataViewModel<T : BaseDoc<*>, FILT : ApiFilter> : BaseViewM
         SimpleState(isOk = false, msgError = "Not implemented...")
 
     val flowPagingData: Flow<PagingData<T>> by lazy {
-        Pager<Int, T>(
+        Pager(
             config = PagingConfig(
                 pageSize = pageSize.intValue,
             ),

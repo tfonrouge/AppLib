@@ -57,6 +57,7 @@ dependencies {
     /* scanner service provided by Google Play */
     implementation("com.google.android.gms:play-services-code-scanner:16.1.0")
     implementation("androidx.lifecycle:lifecycle-viewmodel-compose:2.6.2")
+    implementation("androidx.lifecycle:lifecycle-runtime-compose:2.6.2")
     /* camerax */
     val cameraxVersion = "1.4.0-alpha03"
     implementation("androidx.camera:camera-camera2:$cameraxVersion")
