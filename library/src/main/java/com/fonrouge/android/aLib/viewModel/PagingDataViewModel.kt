@@ -17,6 +17,7 @@ import com.fonrouge.fsLib.model.apiData.ApiList
 import com.fonrouge.fsLib.model.base.BaseDoc
 import com.fonrouge.fsLib.model.state.ListState
 import com.fonrouge.fsLib.model.state.SimpleState
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
 import kotlin.reflect.KSuspendFunction1
 
@@ -29,6 +30,7 @@ abstract class PagingDataViewModel<T : BaseDoc<*>, FILT : ApiFilter> : BaseViewM
     open val onBeforeListStateGet: (() -> Unit)? = null
     suspend fun listStateGetter(pageNum: Int): ListState<T> {
         onBeforeListStateGet?.invoke()
+        delay(50)
         return listStateFunc(
             ApiList(
                 tabPage = pageNum,
