@@ -38,9 +38,9 @@ abstract class PagingDataViewModel<T : BaseDoc<*>, FILT : ApiFilter> : BaseViewM
         onBeforeListStateGet?.invoke()
         val delay = System.currentTimeMillis() - lastRequest
         Log.d("DELAY 1", "millis: $delay")
-        if (delay < requestDelay) {
+        if (delay <= requestDelay) {
             Log.d("DELAY 2", "millis: $delay")
-//            delay(delay) // this doesn't work
+//            delay(delay + requestDelay - delay) // this doesn't work
         }
         /* TODO: Check why this is needed to avoid a TIMEOUT on continuous fast requests */
         delay(requestDelay)
