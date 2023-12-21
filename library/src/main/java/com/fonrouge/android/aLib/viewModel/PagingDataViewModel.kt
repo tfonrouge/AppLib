@@ -1,5 +1,6 @@
 package com.fonrouge.android.aLib.viewModel
 
+import android.util.Log
 import androidx.compose.runtime.MutableIntState
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.getValue
@@ -22,6 +23,11 @@ import kotlinx.coroutines.flow.Flow
 import kotlin.reflect.KSuspendFunction1
 
 abstract class PagingDataViewModel<T : BaseDoc<*>, FILT : ApiFilter> : BaseViewModel<T>() {
+    companion object {
+        var lastRequest: Long = 0L
+        var requestDelay: Long = 50L
+    }
+
     open val pageSize: MutableIntState = mutableIntStateOf(20)
     val refreshingList: MutableState<Boolean> = mutableStateOf(false)
     var requestRefresh by mutableStateOf(false)
@@ -30,7 +36,15 @@ abstract class PagingDataViewModel<T : BaseDoc<*>, FILT : ApiFilter> : BaseViewM
     open val onBeforeListStateGet: (() -> Unit)? = null
     suspend fun listStateGetter(pageNum: Int): ListState<T> {
         onBeforeListStateGet?.invoke()
-        delay(50)
+        val delay = System.currentTimeMillis() - lastRequest
+        Log.d("DELAY 1", "millis: $delay")
+        if (delay < requestDelay) {
+            Log.d("DELAY 2", "millis: $delay")
+//            delay(delay) // this doesn't work
+        }
+        /* TODO: Check why this is needed to avoid a TIMEOUT on continuous fast requests */
+        delay(requestDelay)
+        lastRequest = System.currentTimeMillis()
         return listStateFunc(
             ApiList(
                 tabPage = pageNum,
