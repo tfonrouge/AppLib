@@ -12,7 +12,7 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.serialization.Serializable
 
 @ExperimentalGetImage
-class CameraViewModel : ViewModel() {
+class ViewModelCamera : ViewModel() {
 
     companion object {
         var defaultCameraType: CameraType = CameraType.GooglePlay

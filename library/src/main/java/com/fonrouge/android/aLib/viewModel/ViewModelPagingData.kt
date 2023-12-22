@@ -20,17 +20,23 @@ import com.fonrouge.fsLib.model.state.ListState
 import com.fonrouge.fsLib.model.state.SimpleState
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
+import kotlinx.serialization.InternalSerializationApi
+import kotlinx.serialization.encodeToString
+import kotlinx.serialization.json.Json
+import kotlinx.serialization.serializer
 import kotlin.reflect.KSuspendFunction1
 
-abstract class PagingDataViewModel<T : BaseDoc<*>, FILT : ApiFilter> : BaseViewModel<T>() {
+abstract class ViewModelPagingData<T : BaseDoc<*>, FILT : ApiFilter> : ViewModelBase<T>() {
     companion object {
         var lastRequest: Long = 0L
         var requestDelay: Long = 50L
     }
 
+    private var filterSerialized: FILT? = null
     open val pageSize: MutableIntState = mutableIntStateOf(20)
     val refreshingList: MutableState<Boolean> = mutableStateOf(false)
     var requestRefresh by mutableStateOf(false)
+    val refreshByFilter = mutableStateOf(false)
     abstract val apiFilter: MutableState<FILT>
     abstract val listStateFunc: KSuspendFunction1<ApiList<FILT>, ListState<T>>
     open val onBeforeListStateGet: (() -> Unit)? = null
@@ -73,10 +79,32 @@ abstract class PagingDataViewModel<T : BaseDoc<*>, FILT : ApiFilter> : BaseViewM
     open fun onEvent(uiBaseEvent: UIBaseEvent) {
         when (uiBaseEvent) {
             UIBaseEvent.UpdateList -> requestRefresh = true
+            UIBaseEvent.EditingFilter -> {
+                if (!refreshByFilter.value) {
+                    filterSerialized = apiFilter.value
+                    refreshByFilter.value = true
+                }
+            }
+
+            UIBaseEvent.RefreshByFilter -> {
+                refreshByFilter.value = false
+                if (filterSerialized?.equals(apiFilter.value) != true) {
+                    filterSerialized = apiFilter.value
+                    onEvent(UIBaseEvent.UpdateList)
+                }
+            }
         }
     }
 
     sealed class UIBaseEvent {
         data object UpdateList : UIBaseEvent()
+        data object RefreshByFilter : UIBaseEvent()
+        data object EditingFilter : UIBaseEvent()
     }
+}
+
+@OptIn(InternalSerializationApi::class)
+inline fun <reified FILT : ApiFilter> encodeApiFilter(apiFilter: FILT): String {
+    val a = FILT::class.serializer()
+    return Json.encodeToString(apiFilter)
 }

@@ -1,28 +1,28 @@
 package com.fonrouge.android.aLib.composable
 
 import androidx.compose.runtime.Composable
-import com.fonrouge.android.aLib.viewModel.CameraViewModel
+import com.fonrouge.android.aLib.viewModel.ViewModelCamera
 import com.google.mlkit.vision.barcode.common.Barcode
 
 @Composable
 fun ScanBarcodeScreen(
-    cameraViewModel: CameraViewModel,
+    viewModelCamera: ViewModelCamera,
     onReadBarcode: (Barcode) -> Unit = {},
     onFilter: ((Barcode) -> Boolean)? = null,
     content: @Composable () -> Unit,
 ) {
-    when (cameraViewModel.selectedCameraType.value) {
-        CameraViewModel.CameraType.GooglePlay -> {
+    when (viewModelCamera.selectedCameraType.value) {
+        ViewModelCamera.CameraType.GooglePlay -> {
             GmsScanScreen(
-                cameraViewModel = cameraViewModel,
+                viewModelCamera = viewModelCamera,
                 onReadBarcode = onReadBarcode,
                 content = content
             )
         }
 
-        CameraViewModel.CameraType.CameraX -> {
+        ViewModelCamera.CameraType.CameraX -> {
             CameraXCoreReaderScreen1(
-                cameraViewModel = cameraViewModel,
+                viewModelCamera = viewModelCamera,
                 onReadBarcode = onReadBarcode,
                 onFilter = onFilter,
                 content = content

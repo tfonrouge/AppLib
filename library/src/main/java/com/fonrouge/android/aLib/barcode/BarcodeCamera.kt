@@ -24,7 +24,7 @@ import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.compose.ui.viewinterop.AndroidView
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.LifecycleOwner
-import com.fonrouge.android.aLib.viewModel.CameraViewModel
+import com.fonrouge.android.aLib.viewModel.ViewModelCamera
 import com.google.mlkit.vision.barcode.BarcodeScanner
 import com.google.mlkit.vision.barcode.BarcodeScannerOptions
 import com.google.mlkit.vision.barcode.BarcodeScanning
@@ -43,7 +43,7 @@ class BarcodeCamera {
 
     @Composable
     fun CameraPreview(
-        cameraViewModel: CameraViewModel,
+        viewModelCamera: ViewModelCamera,
         onReadBarcode: (Barcode) -> Unit,
         onFilter: ((Barcode) -> Boolean)? = null,
     ) {
@@ -74,7 +74,7 @@ class BarcodeCamera {
                                 lifecycleOwner = lifecycleOwner,
                                 onReadBarcode = onReadBarcode,
                                 onFilter = onFilter,
-                                cameraViewModel = cameraViewModel,
+                                viewModelCamera = viewModelCamera,
                             )
                         },
                         ContextCompat.getMainExecutor(context)
@@ -91,7 +91,7 @@ class BarcodeCamera {
         imageCapture: ImageCapture,
         onReadBarcode: (Barcode) -> Unit,
         onFilter: ((Barcode) -> Boolean)? = null,
-        cameraViewModel: CameraViewModel
+        viewModelCamera: ViewModelCamera
     ) {
         val cameraProviderFuture = ProcessCameraProvider.getInstance(context)
 
@@ -136,7 +136,7 @@ class BarcodeCamera {
                     imageProxy = imageProxy,
                     onReadBarcode = onReadBarcode,
                     onFilter = onFilter,
-                    viewModel = cameraViewModel,
+                    viewModel = viewModelCamera,
                 )
             }
 
@@ -156,7 +156,7 @@ class BarcodeCamera {
                 Log.e(TAG, "Use case binding failed", exc)
             }
 
-            camera?.cameraControl?.enableTorch(cameraViewModel.torchState.value)
+            camera?.cameraControl?.enableTorch(viewModelCamera.torchState.value)
 
         }, ContextCompat.getMainExecutor(context))
     }
@@ -172,7 +172,7 @@ class BarcodeCamera {
         imageProxy: ImageProxy,
         onReadBarcode: (Barcode) -> Unit,
         onFilter: ((Barcode) -> Boolean)? = null,
-        viewModel: CameraViewModel
+        viewModel: ViewModelCamera
     ) {
         imageProxy.image?.let { image ->
             val inputImage =
@@ -189,8 +189,8 @@ class BarcodeCamera {
                                     if (!barcode.displayValue.isNullOrEmpty() && (System.currentTimeMillis() - viewModel.lastTime) > 500L) {
                                         toggleFlash(false)
                                         onReadBarcode(barcode)
-                                        viewModel.onEvent(CameraViewModel.UIEvent.CodeRead(barcode.displayValue))
-                                        viewModel.onEvent(CameraViewModel.UIEvent.Close)
+                                        viewModel.onEvent(ViewModelCamera.UIEvent.CodeRead(barcode.displayValue))
+                                        viewModel.onEvent(ViewModelCamera.UIEvent.Close)
                                     }
                                 }
                             }

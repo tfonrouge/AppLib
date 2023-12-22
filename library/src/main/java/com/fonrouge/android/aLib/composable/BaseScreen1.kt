@@ -42,8 +42,8 @@ import androidx.paging.compose.LazyPagingItems
 import androidx.paging.compose.collectAsLazyPagingItems
 import androidx.paging.compose.itemContentType
 import androidx.paging.compose.itemKey
-import com.fonrouge.android.aLib.viewModel.BaseViewModel
-import com.fonrouge.android.aLib.viewModel.PagingDataViewModel
+import com.fonrouge.android.aLib.viewModel.ViewModelBase
+import com.fonrouge.android.aLib.viewModel.ViewModelPagingData
 import com.fonrouge.fsLib.model.base.BaseDoc
 import eu.bambooapps.material3.pullrefresh.PullRefreshIndicator
 import eu.bambooapps.material3.pullrefresh.PullRefreshState
@@ -54,7 +54,7 @@ import eu.bambooapps.material3.pullrefresh.rememberPullRefreshState
 @Composable
 fun <T : BaseDoc<*>> BodyList(
     paddingValues: PaddingValues? = null,
-    viewModel: PagingDataViewModel<T, *>,
+    viewModel: ViewModelPagingData<T, *>,
     pullRefreshState: PullRefreshState,
     content: @Composable (T?) -> Unit
 ) {
@@ -153,7 +153,7 @@ fun DismissBackgroundDelete(
 }
 
 @Composable
-fun <T : Any> snackbarHostState(viewModel: BaseViewModel<T>): SnackbarHostState {
+fun <T : Any> snackbarHostState(viewModel: ViewModelBase<T>): SnackbarHostState {
     val snackbarHostState = remember { SnackbarHostState() }
     val simpleState by viewModel.snackBarStatus.collectAsState()
     LaunchedEffect(key1 = simpleState?.dateTime) {
@@ -183,11 +183,11 @@ fun <T : Any> snackbarHostState(viewModel: BaseViewModel<T>): SnackbarHostState 
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun <T : BaseDoc<*>> pullRefreshState(viewModel: PagingDataViewModel<T, *>): PullRefreshState {
+fun <T : BaseDoc<*>> pullRefreshState(viewModel: ViewModelPagingData<T, *>): PullRefreshState {
     return rememberPullRefreshState(
         refreshing = viewModel.refreshingList.value,
         onRefresh = {
-            viewModel.onEvent(uiBaseEvent = PagingDataViewModel.UIBaseEvent.UpdateList)
+            viewModel.onEvent(uiBaseEvent = ViewModelPagingData.UIBaseEvent.UpdateList)
         }
     )
 }
