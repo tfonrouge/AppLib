@@ -1,6 +1,6 @@
 package com.fonrouge.android.aLib.viewModel
 
-import android.util.Log
+import androidx.camera.core.ExperimentalGetImage
 import androidx.compose.runtime.MutableIntState
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.getValue
@@ -12,6 +12,7 @@ import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
 import androidx.paging.cachedIn
+import com.fonrouge.android.aLib.apiServices.AppApi
 import com.fonrouge.android.aLib.domain.BasePagingSource
 import com.fonrouge.fsLib.model.apiData.ApiFilter
 import com.fonrouge.fsLib.model.apiData.ApiList
@@ -29,7 +30,6 @@ import kotlin.reflect.KSuspendFunction1
 abstract class ViewModelPagingData<T : BaseDoc<*>, FILT : ApiFilter> : ViewModelBase<T>() {
     companion object {
         var lastRequest: Long = 0L
-        var requestDelay: Long = 50L
     }
 
     private var filterSerialized: FILT? = null
@@ -40,16 +40,11 @@ abstract class ViewModelPagingData<T : BaseDoc<*>, FILT : ApiFilter> : ViewModel
     abstract val apiFilter: MutableState<FILT>
     abstract val listStateFunc: KSuspendFunction1<ApiList<FILT>, ListState<T>>
     open val onBeforeListStateGet: (() -> Unit)? = null
+
+    @androidx.annotation.OptIn(ExperimentalGetImage::class)
     suspend fun listStateGetter(pageNum: Int): ListState<T> {
+        if (AppApi.delayBeforeRequest > 0) delay(AppApi.delayBeforeRequest.toLong())
         onBeforeListStateGet?.invoke()
-        val delay = System.currentTimeMillis() - lastRequest
-        Log.d("DELAY 1", "millis: $delay")
-        if (delay <= requestDelay) {
-            Log.d("DELAY 2", "millis: $delay")
-//            delay(delay + requestDelay - delay) // this doesn't work
-        }
-        /* TODO: Check why this is needed to avoid a TIMEOUT on continuous fast requests */
-        delay(requestDelay)
         lastRequest = System.currentTimeMillis()
         return listStateFunc(
             ApiList(

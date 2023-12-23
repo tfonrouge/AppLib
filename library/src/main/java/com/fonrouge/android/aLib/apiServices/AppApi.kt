@@ -7,7 +7,10 @@ import com.fonrouge.fsLib.model.base.IUser
 import com.fonrouge.fsLib.model.state.ItemState
 import com.fonrouge.fsLib.model.state.SimpleState
 import io.ktor.client.HttpClient
+import io.ktor.client.HttpClientConfig
 import io.ktor.client.call.body
+import io.ktor.client.engine.android.Android
+import io.ktor.client.engine.cio.CIO
 import io.ktor.client.engine.okhttp.OkHttp
 import io.ktor.client.plugins.DefaultRequest
 import io.ktor.client.plugins.HttpTimeout
@@ -34,11 +37,26 @@ object AppApi {
     var appRoute: String = "appRoute"
     var userAgent: String = "AppAndroid"
     var serializedIUser: String? = null
+    var engine: Engine? = null
+    var delayBeforeRequest: Int = 0
     private var _httpClient: HttpClient? = null
+
+    private fun getEngine(
+        engine: Engine?,
+        block: HttpClientConfig<*>.() -> Unit = {}
+    ): HttpClient {
+        return when (engine) {
+            Engine.Android -> HttpClient(engineFactory = Android, block = block)
+            Engine.CIO -> HttpClient(engineFactory = CIO, block = block)
+            Engine.OkHttp -> HttpClient(engineFactory = OkHttp, block = block)
+            null -> HttpClient(block = block)
+        }
+    }
+
     val client: HttpClient
         get() {
             if (_httpClient == null) {
-                _httpClient = HttpClient(OkHttp) {
+                _httpClient = getEngine(engine) {
                     install(Auth)
                     install(ContentNegotiation) {
                         json()
@@ -115,5 +133,14 @@ object AppApi {
             e.printStackTrace()
             SimpleState(isOk = false, msgError = e.message)
         }
+    }
+
+    /**
+     * link - https://ktor.io/docs/http-client-engines.html#minimal-version
+     */
+    enum class Engine {
+        Android,
+        CIO,
+        OkHttp,
     }
 }
