@@ -37,7 +37,7 @@ object AppApi {
     var appRoute: String = "appRoute"
     var userAgent: String = "AppAndroid"
     var serializedIUser: String? = null
-    var engine: Engine? = null
+    var engine: Engine? = Engine.Android
     var delayBeforeRequest: Int = 0
     private var _httpClient: HttpClient? = null
 
