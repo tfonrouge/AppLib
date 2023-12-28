@@ -1,13 +1,16 @@
 package com.fonrouge.android.aLib.composable
 
+import androidx.annotation.OptIn
+import androidx.camera.core.ExperimentalGetImage
 import androidx.compose.runtime.Composable
 import com.fonrouge.android.aLib.viewModel.ViewModelCamera
 import com.google.mlkit.vision.barcode.common.Barcode
 
+@OptIn(ExperimentalGetImage::class)
 @Composable
 fun ScanBarcodeScreen(
     viewModelCamera: ViewModelCamera,
-    onReadBarcode: (Barcode) -> Unit = {},
+    onReadBarcode: (CodeEntry) -> Unit = {},
     onFilter: ((Barcode) -> Boolean)? = null,
     content: @Composable () -> Unit,
 ) {
@@ -28,5 +31,16 @@ fun ScanBarcodeScreen(
                 content = content
             )
         }
+    }
+}
+
+data class CodeEntry(
+    val source: Type,
+    val barcode: Barcode? = null,
+    val code: String? = null,
+) {
+    enum class Type {
+        Camera,
+        Keyboard,
     }
 }

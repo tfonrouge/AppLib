@@ -24,6 +24,7 @@ import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.compose.ui.viewinterop.AndroidView
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.LifecycleOwner
+import com.fonrouge.android.aLib.composable.CodeEntry
 import com.fonrouge.android.aLib.viewModel.ViewModelCamera
 import com.google.mlkit.vision.barcode.BarcodeScanner
 import com.google.mlkit.vision.barcode.BarcodeScannerOptions
@@ -44,7 +45,7 @@ class BarcodeCamera {
     @Composable
     fun CameraPreview(
         viewModelCamera: ViewModelCamera,
-        onReadBarcode: (Barcode) -> Unit,
+        onReadBarcode: (CodeEntry) -> Unit,
         onFilter: ((Barcode) -> Boolean)? = null,
     ) {
         val lifecycleOwner = LocalLifecycleOwner.current
@@ -89,7 +90,7 @@ class BarcodeCamera {
         previewView: PreviewView,
         lifecycleOwner: LifecycleOwner,
         imageCapture: ImageCapture,
-        onReadBarcode: (Barcode) -> Unit,
+        onReadBarcode: (CodeEntry) -> Unit,
         onFilter: ((Barcode) -> Boolean)? = null,
         viewModelCamera: ViewModelCamera
     ) {
@@ -170,7 +171,7 @@ class BarcodeCamera {
     private fun processImageProxy(
         barcodeScanner: BarcodeScanner,
         imageProxy: ImageProxy,
-        onReadBarcode: (Barcode) -> Unit,
+        onReadBarcode: (CodeEntry) -> Unit,
         onFilter: ((Barcode) -> Boolean)? = null,
         viewModel: ViewModelCamera
     ) {
@@ -188,8 +189,14 @@ class BarcodeCamera {
                                 if (onFilter == null || onFilter(barcode)) {
                                     if (!barcode.displayValue.isNullOrEmpty() && (System.currentTimeMillis() - viewModel.lastTime) > 500L) {
                                         toggleFlash(false)
-                                        onReadBarcode(barcode)
-                                        viewModel.onEvent(ViewModelCamera.UIEvent.CodeRead(barcode.displayValue))
+                                        onReadBarcode(
+                                            CodeEntry(
+                                                source = CodeEntry.Type.Camera,
+                                                barcode = barcode,
+                                                code = barcode.rawValue
+                                            )
+                                        )
+                                        viewModel.onEvent(ViewModelCamera.UIEvent.CodeRead(barcode.rawValue))
                                         viewModel.onEvent(ViewModelCamera.UIEvent.Close)
                                     }
                                 }

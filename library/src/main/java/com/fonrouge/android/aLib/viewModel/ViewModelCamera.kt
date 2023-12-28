@@ -23,6 +23,8 @@ class ViewModelCamera : ViewModel() {
     val selectedCameraType: MutableState<CameraType> = mutableStateOf(defaultCameraType)
     var lastTime: Long = 0L
 
+    val manualEntry = mutableStateOf("")
+
     val gmsBarcodeScannerOptions by lazy {
         GmsBarcodeScannerOptions.Builder()
             .allowManualInput()
@@ -53,6 +55,11 @@ class ViewModelCamera : ViewModel() {
                 lastTime = System.currentTimeMillis()
                 ToneGenerator(0, ToneGenerator.MAX_VOLUME).startTone(ToneGenerator.TONE_PROP_PROMPT)
             }
+
+            UIEvent.ManualEntry -> {
+                onEvent(UIEvent.Close)
+                onEvent(UIEvent.CodeRead(manualEntry.value))
+            }
         }
     }
 
@@ -60,6 +67,7 @@ class ViewModelCamera : ViewModel() {
         data object Open : UIEvent()
         data object Close : UIEvent()
         data class CodeRead(val codeScanned: String?) : UIEvent()
+        data object ManualEntry : UIEvent()
     }
 
     @Serializable

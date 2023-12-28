@@ -18,7 +18,7 @@ fun GmsScanScreen(
     context: Context = LocalContext.current,
     onFailure: (Exception) -> Unit = {},
     onCanceled: () -> Unit = {},
-    onReadBarcode: (Barcode) -> Unit = {},
+    onReadBarcode: (CodeEntry) -> Unit = {},
     content: @Composable () -> Unit = {},
 ) {
     if (viewModelCamera.uiState.collectAsState().value.scannerOpen) {
@@ -26,8 +26,14 @@ fun GmsScanScreen(
             .getClient(context, viewModelCamera.gmsBarcodeScannerOptions)
         scanner.startScan()
             .addOnSuccessListener { barcode: Barcode ->
-                onReadBarcode(barcode)
-                viewModelCamera.onEvent(ViewModelCamera.UIEvent.CodeRead(barcode.displayValue))
+                onReadBarcode(
+                    CodeEntry(
+                        source = CodeEntry.Type.Camera,
+                        barcode = barcode,
+                        code = barcode.rawValue
+                    )
+                )
+                viewModelCamera.onEvent(ViewModelCamera.UIEvent.CodeRead(barcode.rawValue))
             }
             .addOnCanceledListener {
                 onCanceled()
