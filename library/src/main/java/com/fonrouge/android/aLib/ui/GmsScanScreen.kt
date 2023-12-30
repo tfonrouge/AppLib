@@ -1,4 +1,4 @@
-package com.fonrouge.android.aLib.composable
+package com.fonrouge.android.aLib.ui
 
 import android.content.Context
 import androidx.annotation.OptIn

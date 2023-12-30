@@ -1,4 +1,4 @@
-package com.fonrouge.android.aLib.composable
+package com.fonrouge.android.aLib.ui
 
 import androidx.annotation.OptIn
 import androidx.camera.core.ExperimentalGetImage

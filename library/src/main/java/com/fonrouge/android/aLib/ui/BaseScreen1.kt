@@ -1,4 +1,4 @@
-package com.fonrouge.android.aLib.composable
+package com.fonrouge.android.aLib.ui
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable

@@ -1,4 +1,4 @@
-package com.fonrouge.android.aLib.composable
+package com.fonrouge.android.aLib.ui
 
 import android.Manifest
 import android.util.Log
