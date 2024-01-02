@@ -14,8 +14,8 @@ import androidx.paging.PagingData
 import androidx.paging.cachedIn
 import com.fonrouge.android.aLib.apiServices.AppApi
 import com.fonrouge.android.aLib.domain.BasePagingSource
-import com.fonrouge.fsLib.model.apiData.ApiFilter
 import com.fonrouge.fsLib.model.apiData.ApiList
+import com.fonrouge.fsLib.model.apiData.IApiFilter
 import com.fonrouge.fsLib.model.base.BaseDoc
 import com.fonrouge.fsLib.model.state.ListState
 import com.fonrouge.fsLib.model.state.SimpleState
@@ -27,7 +27,7 @@ import kotlinx.serialization.json.Json
 import kotlinx.serialization.serializer
 import kotlin.reflect.KSuspendFunction1
 
-abstract class ViewModelPagingData<T : BaseDoc<*>, FILT : ApiFilter> : ViewModelBase<T>() {
+abstract class ViewModelPagingData<T : BaseDoc<*>, FILT : IApiFilter> : ViewModelBase<T>() {
     companion object {
         var lastRequest: Long = 0L
     }
@@ -99,7 +99,7 @@ abstract class ViewModelPagingData<T : BaseDoc<*>, FILT : ApiFilter> : ViewModel
 }
 
 @OptIn(InternalSerializationApi::class)
-inline fun <reified FILT : ApiFilter> encodeApiFilter(apiFilter: FILT): String {
+inline fun <reified FILT : IApiFilter> encodeApiFilter(apiFilter: FILT): String {
     val a = FILT::class.serializer()
     return Json.encodeToString(apiFilter)
 }
