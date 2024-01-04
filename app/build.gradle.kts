@@ -2,9 +2,6 @@ plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
 }
-
-val aLibVersion = rootProject.property("aLibVersion")
-
 android {
     namespace = "com.fonrouge.applib"
     compileSdk = 34
@@ -65,7 +62,7 @@ dependencies {
     implementation("androidx.navigation:navigation-compose:2.7.6")
 
 //    implementation(project(":library"))
-    implementation("com.fonrouge.android:aLib:$aLibVersion")
+    implementation("com.fonrouge.android:aLib:1.1.0")
 
     implementation("com.google.accompanist:accompanist-permissions:0.32.0")
     /* camerax */

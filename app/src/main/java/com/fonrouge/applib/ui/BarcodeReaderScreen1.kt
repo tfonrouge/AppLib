@@ -1,5 +1,6 @@
 package com.fonrouge.applib.ui
 
+import androidx.camera.core.ExperimentalGetImage
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -25,25 +26,26 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
-import com.fonrouge.android.aLib.composable.ScanBarcodeScreen
-import com.fonrouge.android.aLib.viewModel.CameraViewModel
+import com.fonrouge.android.aLib.ui.ScanBarcodeScreen
+import com.fonrouge.android.aLib.viewModel.ViewModelCamera
 
+@androidx.annotation.OptIn(ExperimentalGetImage::class)
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun BarcodeReaderScreen1(
-    cameraViewModel: CameraViewModel = viewModel()
+    viewModelCamera: ViewModelCamera = viewModel()
 ) {
-    ScanBarcodeScreen(cameraViewModel = cameraViewModel) {
+    ScanBarcodeScreen(viewModelCamera = viewModelCamera) {
         Column(
             modifier = Modifier
                 .fillMaxSize(),
             verticalArrangement = Arrangement.Center,
             horizontalAlignment = Alignment.CenterHorizontally,
         ) {
-            val state by cameraViewModel.uiState.collectAsState(null)
+            val state by viewModelCamera.uiState.collectAsState(null)
             var expandedCameraSelector by remember { mutableStateOf(false) }
             var selectedCameraType by remember {
-                cameraViewModel.selectedCameraType
+                viewModelCamera.selectedCameraType
             }
             ExposedDropdownMenuBox(
                 expanded = expandedCameraSelector,
@@ -58,7 +60,7 @@ fun BarcodeReaderScreen1(
                 ExposedDropdownMenu(
                     expanded = expandedCameraSelector,
                     onDismissRequest = { expandedCameraSelector = false }) {
-                    CameraViewModel.CameraType.entries.forEach { cameraType ->
+                    ViewModelCamera.CameraType.entries.forEach { cameraType ->
                         DropdownMenuItem(
                             text = { Text(text = "$cameraType") },
                             onClick = {
@@ -78,7 +80,7 @@ fun BarcodeReaderScreen1(
                 }
             }
             Spacer(modifier = Modifier.size(20.dp))
-            Button(onClick = { cameraViewModel.onEvent(CameraViewModel.UIEvent.Open) }) {
+            Button(onClick = { viewModelCamera.onEvent(ViewModelCamera.UIEvent.Open) }) {
                 Text(text = "Scan ...", style = MaterialTheme.typography.titleLarge)
             }
             if (!state?.codeScanned.isNullOrEmpty()) {
