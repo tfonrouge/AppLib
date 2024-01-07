@@ -5,7 +5,7 @@ import com.fonrouge.fsLib.model.state.SimpleState
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 
-abstract class ViewModelBase<T : Any> : ViewModel() {
+abstract class ViewModelBase : ViewModel() {
     private val _snackBarStatus = MutableStateFlow<SimpleState?>(null)
     val snackBarStatus = _snackBarStatus.asStateFlow()
 

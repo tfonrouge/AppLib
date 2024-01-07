@@ -153,10 +153,11 @@ fun DismissBackgroundDelete(
 }
 
 @Composable
-fun <T : Any> snackbarHostState(viewModel: ViewModelBase<T>): SnackbarHostState {
+fun snackbarHostState(viewModel: ViewModelBase): SnackbarHostState {
     val snackbarHostState = remember { SnackbarHostState() }
     val simpleState by viewModel.snackBarStatus.collectAsState()
-    LaunchedEffect(key1 = simpleState?.dateTime) {
+//    LaunchedEffect(key1 = simpleState?.dateTime) {
+    LaunchedEffect(key1 = simpleState) {
         simpleState?.let {
             when (it.isOk) {
                 true -> it.msgOk?.let { it1 ->
