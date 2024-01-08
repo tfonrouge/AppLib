@@ -43,7 +43,6 @@ fun <CV : ICommonViewItem<T, ID, FILT>, T : BaseDoc<ID>, ID : Any, FILT : IApiFi
     apiItem: ApiItem<T, ID, FILT>
 ) {
     navHostController ?: return
-//    val serializedApiItem = Json.encodeToString(apiItem)
     val serializedApiItem = Json.encodeToString(
         ApiItem.serializer(itemSerializer, idSerializer, apiFilterSerializer),
         apiItem
