@@ -77,9 +77,9 @@ object AppApi {
                         }
                     }
                     install(HttpTimeout) {
-                        requestTimeoutMillis = 10000
-                        connectTimeoutMillis = 10000
-                        socketTimeoutMillis = 10000
+                        requestTimeoutMillis = 60000
+                        connectTimeoutMillis = 60000
+                        socketTimeoutMillis = 60000
                     }
                 }
             }

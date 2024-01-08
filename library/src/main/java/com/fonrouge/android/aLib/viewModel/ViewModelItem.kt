@@ -1,10 +1,11 @@
 package com.fonrouge.android.aLib.viewModel
 
 import android.net.Uri
+import androidx.compose.runtime.Composable
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.NavBackStackEntry
+import androidx.navigation.NavHostController
 import com.fonrouge.fsLib.config.ICommonViewItem
-import com.fonrouge.fsLib.model.CrudTask
 import com.fonrouge.fsLib.model.apiData.ApiItem
 import com.fonrouge.fsLib.model.apiData.IApiFilter
 import com.fonrouge.fsLib.model.base.BaseDoc
@@ -17,96 +18,56 @@ import kotlin.reflect.KSuspendFunction1
 abstract class ViewModelItem<T : BaseDoc<ID>, ID : Any, FILT : IApiFilter> : ViewModelBase()
 
 @Suppress("unused")
-fun <CV : ICommonViewItem<T, ID, FILT>, T : BaseDoc<ID>, ID : Any, FILT : IApiFilter> CV.decodeParams(
-    navBackStackEntry: NavBackStackEntry
+@Composable
+fun <CV : ICommonViewItem<T, ID, FILT>, T : BaseDoc<ID>, ID : Any, FILT : IApiFilter> CV.DecodeParams(
+    navBackStackEntry: NavBackStackEntry,
+    function: @Composable (ApiItem<T, ID, FILT>) -> Unit
 ) {
-    val crudTask: CrudTask = navBackStackEntry.arguments?.getString("action")?.let {
-        Json.decodeFromString(it)
-    } ?: throw Exception("No action param defined in route")
-    val id: ID? = navBackStackEntry.arguments?.getString("id")?.let {
+    val apiItem = navBackStackEntry.arguments?.getString("apiItem")?.let {
         if (it != "\"null\"") Json.decodeFromString(
-            itemIdSerializer
-                ?: throw Exception("No itemIdSerializer defined in '${this::class.simpleName}'"),
-            it
+            ApiItem.serializer(itemSerializer, idSerializer, apiFilterSerializer),
+            it.removePrefix("\"").removeSuffix("\"")
         ) else null
     }
-    val apiFilter: FILT? = navBackStackEntry.arguments?.getString("apiFilter")?.let {
-        if (it != "\"null\"") Json.decodeFromString(
-            apiFilterSerializer
-                ?: throw Exception("No apiFilterSerializer defined in '${this::class.simpleName}'"),
-            it
-        ) else null
-    }
-    itemState = navBackStackEntry.arguments?.getString("itemState")?.let {
-        if (it != "\"null\"") Json.decodeFromString(
-            ItemState.serializer(
-                itemSerializer
-                    ?: throw Exception("No itemSerializer defined in '${this::class.simpleName}'"),
-            ),
-            it
-        ) else null
-    }
-
-    apiItem = ApiItem(
-        id = id,
-        item = itemState?.item,
-        crudTask = crudTask,
-        apiFilter = apiFilter
-    )
+    apiItem?.let { function(it) }
 }
 
 @Suppress("unused")
 fun <CV : ICommonViewItem<*, *, *>> CV.routeWithParams(): String {
-    return "$name?action={action}&id={id}&apiFilter={apiFilter}&itemState={itemState}"
+    return "$name?apiItem={apiItem}"
 }
 
 @Suppress("unused")
-fun <CV : ICommonViewItem<T, ID, FILT>, T : BaseDoc<ID>, ID : Any, FILT : IApiFilter> CV.goToRouteWithParams(): String {
-    return apiItem?.let { apiItem ->
-        val serializedApiFilter = apiItem.apiFilter?.let { iApiFilter ->
-            Json.encodeToString(
-                apiFilterSerializer
-                    ?: throw Exception("No apiFilterSerializer defined in '${this::class.simpleName}'"),
-                iApiFilter
-            ).also { Uri.encode("\"$it\"") }
-        }
-        val serializedId = apiItem.id?.let { id ->
-            Json.encodeToString(
-                itemIdSerializer
-                    ?: throw Exception("No itemIdSerializer defined in '${this::class.simpleName}'"),
-                id
-            ).also { Uri.encode("\"$it\"") }
-        }
-        val serializedItemState = itemState?.let { itemState ->
-            Json.encodeToString(
-                ItemState.serializer(
-                    itemSerializer
-                        ?: throw Exception("No itemSerializer defined in '${this::class.simpleName}'")
-                ),
-                itemState
-            ).also { Uri.encode("\"$it\"") }
-        }
-        "$name?action=\"${apiItem.crudTask}\"&id=\"${serializedId}\"&apiFilter=\"${serializedApiFilter}\"&itemState=\"$serializedItemState\""
-    } ?: name
+fun <CV : ICommonViewItem<T, ID, FILT>, T : BaseDoc<ID>, ID : Any, FILT : IApiFilter> CV.goToRouteWithParams(
+    navHostController: NavHostController?,
+    apiItem: ApiItem<T, ID, FILT>
+) {
+    navHostController ?: return
+//    val serializedApiItem = Json.encodeToString(apiItem)
+    val serializedApiItem = Json.encodeToString(
+        ApiItem.serializer(itemSerializer, idSerializer, apiFilterSerializer),
+        apiItem
+    )
+    navHostController.navigate(
+        "$name?apiItem=\"${Uri.encode(serializedApiItem)}\""
+    )
 }
 
 @Suppress("unused")
 fun <T : BaseDoc<ID>, ID : Any, FILT : IApiFilter> ViewModelItem<*, *, *>.callApi(
     commonView: ICommonViewItem<T, ID, FILT>,
-    function: KSuspendFunction1<ApiItem<T, ID, FILT>, ItemState<T>>
+    function: KSuspendFunction1<ApiItem<T, ID, FILT>, ItemState<T>>,
+    onSuccess: (ICommonViewItem<T, ID, FILT>.(ItemState<T>) -> Unit)? = null,
+    onFailure: (ICommonViewItem<T, ID, FILT>.(ItemState<T>) -> Unit)? = null,
+    apiItemBuilder: () -> ApiItem<T, ID, FILT>?
 ) {
-    val apiItem = commonView.apiItem ?: return
-    viewModelScope.launch {
-        commonView.itemState = function(apiItem)
-        if (commonView.itemState?.isOk != true) {
-            when (apiItem.callType) {
-                ApiItem.CallType.Query -> commonView.onQueryFail?.invoke(commonView)
-                ApiItem.CallType.Action -> commonView.onActionFail?.invoke(commonView)
-            }
-        } else {
-            when (apiItem.callType) {
-                ApiItem.CallType.Query -> commonView.onQuerySuccess?.invoke(commonView)
-                ApiItem.CallType.Action -> commonView.onActionSuccess?.invoke(commonView)
+    apiItemBuilder()?.let { apiItem ->
+        viewModelScope.launch {
+            val itemState = function(apiItem)
+            if (itemState.isOk) {
+                onSuccess?.invoke(commonView, itemState)
+            } else {
+                onFailure?.invoke(commonView, itemState)
             }
         }
     }
