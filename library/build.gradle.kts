@@ -5,7 +5,7 @@ plugins {
     `maven-publish`
 }
 
-val aLibVersion = "1.1.0"
+val aLibVersion = "2.0.0"
 
 android {
     namespace = "com.fonrouge.library"
@@ -44,7 +44,7 @@ android {
 
 dependencies {
     implementation("androidx.core:core-ktx:1.12.0")
-    implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.6.2")
+    implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.7.0")
     implementation("androidx.activity:activity-compose:1.8.2")
     implementation(platform("androidx.compose:compose-bom:2023.10.01"))
     implementation("androidx.compose.ui:ui")
@@ -53,12 +53,12 @@ dependencies {
     implementation("androidx.compose.material3:material3:1.1.2")
     implementation("androidx.compose.material:material-icons-extended:1.5.4")
     implementation("androidx.navigation:navigation-compose:2.7.6")
-    implementation("com.fonrouge.fsLib:fsLib:2.2.1")
+    implementation("com.fonrouge.fsLib:fsLib:2.2.2")
     implementation("androidx.paging:paging-compose:3.2.1")
     /* scanner service provided by Google Play */
     implementation("com.google.android.gms:play-services-code-scanner:16.1.0")
-    implementation("androidx.lifecycle:lifecycle-viewmodel-compose:2.6.2")
-    api("androidx.lifecycle:lifecycle-runtime-compose:2.6.2")
+    implementation("androidx.lifecycle:lifecycle-viewmodel-compose:2.7.0")
+    api("androidx.lifecycle:lifecycle-runtime-compose:2.7.0")
     /* camerax */
     val cameraxVersion = "1.4.0-alpha03"
     implementation("androidx.camera:camera-camera2:$cameraxVersion")

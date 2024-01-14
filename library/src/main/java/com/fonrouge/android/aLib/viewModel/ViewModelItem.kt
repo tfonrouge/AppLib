@@ -5,7 +5,7 @@ import androidx.compose.runtime.Composable
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.NavBackStackEntry
 import androidx.navigation.NavHostController
-import com.fonrouge.fsLib.config.ICommonViewItem
+import com.fonrouge.fsLib.config.ICommonContainer
 import com.fonrouge.fsLib.model.apiData.ApiItem
 import com.fonrouge.fsLib.model.apiData.IApiFilter
 import com.fonrouge.fsLib.model.base.BaseDoc
@@ -19,7 +19,7 @@ abstract class ViewModelItem<T : BaseDoc<ID>, ID : Any, FILT : IApiFilter> : Vie
 
 @Suppress("unused")
 @Composable
-fun <CV : ICommonViewItem<T, ID, FILT>, T : BaseDoc<ID>, ID : Any, FILT : IApiFilter> CV.DecodeParams(
+fun <CV : ICommonContainer<T, ID, FILT>, T : BaseDoc<ID>, ID : Any, FILT : IApiFilter> CV.DecodeItemParams(
     navBackStackEntry: NavBackStackEntry,
     function: @Composable (ApiItem<T, ID, FILT>) -> Unit
 ) {
@@ -33,12 +33,12 @@ fun <CV : ICommonViewItem<T, ID, FILT>, T : BaseDoc<ID>, ID : Any, FILT : IApiFi
 }
 
 @Suppress("unused")
-fun <CV : ICommonViewItem<*, *, *>> CV.routeWithParams(): String {
+fun <CV : ICommonContainer<*, *, *>> CV.routeItemWithParams(): String {
     return "$name?apiItem={apiItem}"
 }
 
 @Suppress("unused")
-fun <CV : ICommonViewItem<T, ID, FILT>, T : BaseDoc<ID>, ID : Any, FILT : IApiFilter> CV.goToRouteWithParams(
+fun <CV : ICommonContainer<T, ID, FILT>, T : BaseDoc<ID>, ID : Any, FILT : IApiFilter> CV.goToRouteItemWithParams(
     navHostController: NavHostController?,
     apiItem: ApiItem<T, ID, FILT>
 ) {
@@ -53,20 +53,20 @@ fun <CV : ICommonViewItem<T, ID, FILT>, T : BaseDoc<ID>, ID : Any, FILT : IApiFi
 }
 
 @Suppress("unused")
-fun <T : BaseDoc<ID>, ID : Any, FILT : IApiFilter> ViewModelItem<*, *, *>.callApi(
-    commonView: ICommonViewItem<T, ID, FILT>,
+fun <T : BaseDoc<ID>, ID : Any, FILT : IApiFilter> ViewModelItem<*, *, *>.callItemApi(
+    commonContainer: ICommonContainer<T, ID, FILT>,
     function: KSuspendFunction1<ApiItem<T, ID, FILT>, ItemState<T>>,
-    onSuccess: (ICommonViewItem<T, ID, FILT>.(ItemState<T>) -> Unit)? = null,
-    onFailure: (ICommonViewItem<T, ID, FILT>.(ItemState<T>) -> Unit)? = null,
+    onSuccess: (ICommonContainer<T, ID, FILT>.(ItemState<T>) -> Unit)? = null,
+    onFailure: (ICommonContainer<T, ID, FILT>.(ItemState<T>) -> Unit)? = null,
     apiItemBuilder: () -> ApiItem<T, ID, FILT>?
 ) {
     apiItemBuilder()?.let { apiItem ->
         viewModelScope.launch {
             val itemState = function(apiItem)
             if (itemState.isOk) {
-                onSuccess?.invoke(commonView, itemState)
+                onSuccess?.invoke(commonContainer, itemState)
             } else {
-                onFailure?.invoke(commonView, itemState)
+                onFailure?.invoke(commonContainer, itemState)
             }
         }
     }
