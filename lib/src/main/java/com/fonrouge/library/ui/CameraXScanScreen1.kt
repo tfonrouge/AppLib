@@ -1,4 +1,4 @@
-package com.fonrouge.android.aLib.ui
+package com.fonrouge.library.ui
 
 import android.Manifest
 import android.util.Log
@@ -53,7 +53,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.zIndex
 import androidx.lifecycle.viewmodel.compose.viewModel
-import com.fonrouge.android.aLib.viewModel.ViewModelCamera
+import com.fonrouge.library.viewModel.ViewModelCamera
 import com.fonrouge.library.R
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.google.accompanist.permissions.isGranted

@@ -1,8 +1,8 @@
-package com.fonrouge.android.aLib.domain
+package com.fonrouge.library.domain
 
 import androidx.paging.PagingSource
 import androidx.paging.PagingState
-import com.fonrouge.android.aLib.viewModel.ViewModelPagingData
+import com.fonrouge.library.viewModel.ViewModelPagingData
 import com.fonrouge.fsLib.model.base.BaseDoc
 import com.fonrouge.fsLib.model.state.SimpleState
 import java.io.IOException

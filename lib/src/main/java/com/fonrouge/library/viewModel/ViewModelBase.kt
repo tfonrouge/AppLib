@@ -1,4 +1,4 @@
-package com.fonrouge.android.aLib.viewModel
+package com.fonrouge.library.viewModel
 
 import androidx.lifecycle.ViewModel
 import com.fonrouge.fsLib.model.state.SimpleState

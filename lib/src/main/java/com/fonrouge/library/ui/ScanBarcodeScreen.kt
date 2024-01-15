@@ -1,9 +1,9 @@
-package com.fonrouge.android.aLib.ui
+package com.fonrouge.library.ui
 
 import androidx.annotation.OptIn
 import androidx.camera.core.ExperimentalGetImage
 import androidx.compose.runtime.Composable
-import com.fonrouge.android.aLib.viewModel.ViewModelCamera
+import com.fonrouge.library.viewModel.ViewModelCamera
 import com.google.mlkit.vision.barcode.common.Barcode
 
 @OptIn(ExperimentalGetImage::class)

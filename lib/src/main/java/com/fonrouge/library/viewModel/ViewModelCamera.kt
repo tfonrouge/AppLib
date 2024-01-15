@@ -1,11 +1,11 @@
-package com.fonrouge.android.aLib.viewModel
+package com.fonrouge.library.viewModel
 
 import android.media.ToneGenerator
 import androidx.camera.core.ExperimentalGetImage
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
-import com.fonrouge.android.aLib.barcode.BarcodeCamera
+import com.fonrouge.library.barcode.BarcodeCamera
 import com.google.mlkit.vision.codescanner.GmsBarcodeScannerOptions
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow

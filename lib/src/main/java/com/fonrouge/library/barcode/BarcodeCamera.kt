@@ -1,4 +1,4 @@
-package com.fonrouge.android.aLib.barcode
+package com.fonrouge.library.barcode
 
 import android.content.ContentValues
 import android.content.ContentValues.TAG
@@ -24,8 +24,8 @@ import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.compose.ui.viewinterop.AndroidView
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.LifecycleOwner
-import com.fonrouge.android.aLib.ui.CodeEntry
-import com.fonrouge.android.aLib.viewModel.ViewModelCamera
+import com.fonrouge.library.ui.CodeEntry
+import com.fonrouge.library.viewModel.ViewModelCamera
 import com.google.mlkit.vision.barcode.BarcodeScanner
 import com.google.mlkit.vision.barcode.BarcodeScannerOptions
 import com.google.mlkit.vision.barcode.BarcodeScanning

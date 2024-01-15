@@ -1,4 +1,4 @@
-package com.fonrouge.android.aLib.viewModel
+package com.fonrouge.library.viewModel
 
 import androidx.camera.core.ExperimentalGetImage
 import androidx.compose.runtime.MutableIntState
@@ -12,8 +12,8 @@ import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
 import androidx.paging.cachedIn
-import com.fonrouge.android.aLib.apiServices.AppApi
-import com.fonrouge.android.aLib.domain.BasePagingSource
+import com.fonrouge.library.apiServices.AppApi
+import com.fonrouge.library.domain.BasePagingSource
 import com.fonrouge.fsLib.model.apiData.ApiList
 import com.fonrouge.fsLib.model.apiData.IApiFilter
 import com.fonrouge.fsLib.model.base.BaseDoc

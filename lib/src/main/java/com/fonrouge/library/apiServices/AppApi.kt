@@ -1,4 +1,4 @@
-package com.fonrouge.android.aLib.apiServices
+package com.fonrouge.library.apiServices
 
 import android.util.Log
 import androidx.camera.core.ExperimentalGetImage

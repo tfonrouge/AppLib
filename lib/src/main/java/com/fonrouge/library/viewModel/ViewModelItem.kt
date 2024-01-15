@@ -1,17 +1,12 @@
-package com.fonrouge.android.aLib.viewModel
+package com.fonrouge.library.viewModel
 
-import android.net.Uri
-import androidx.compose.runtime.Composable
 import androidx.lifecycle.viewModelScope
-import androidx.navigation.NavBackStackEntry
-import androidx.navigation.NavHostController
 import com.fonrouge.fsLib.config.ICommonContainer
 import com.fonrouge.fsLib.model.apiData.ApiItem
 import com.fonrouge.fsLib.model.apiData.IApiFilter
 import com.fonrouge.fsLib.model.base.BaseDoc
 import com.fonrouge.fsLib.model.state.ItemState
 import kotlinx.coroutines.launch
-import kotlinx.serialization.json.Json
 import kotlin.reflect.KSuspendFunction1
 
 @Suppress("unused")

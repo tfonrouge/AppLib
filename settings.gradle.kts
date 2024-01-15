@@ -17,4 +17,4 @@ dependencyResolutionManagement {
 
 rootProject.name = "AppLib"
 include(":app")
-include(":library")
+include(":lib")

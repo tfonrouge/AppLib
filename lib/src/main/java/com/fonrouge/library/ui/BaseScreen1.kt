@@ -1,4 +1,4 @@
-package com.fonrouge.android.aLib.ui
+package com.fonrouge.library.ui
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -42,8 +42,8 @@ import androidx.paging.compose.LazyPagingItems
 import androidx.paging.compose.collectAsLazyPagingItems
 import androidx.paging.compose.itemContentType
 import androidx.paging.compose.itemKey
-import com.fonrouge.android.aLib.viewModel.ViewModelBase
-import com.fonrouge.android.aLib.viewModel.ViewModelPagingData
+import com.fonrouge.library.viewModel.ViewModelBase
+import com.fonrouge.library.viewModel.ViewModelPagingData
 import com.fonrouge.fsLib.model.base.BaseDoc
 import eu.bambooapps.material3.pullrefresh.PullRefreshIndicator
 import eu.bambooapps.material3.pullrefresh.PullRefreshState
