@@ -12,13 +12,13 @@ import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
 import androidx.paging.cachedIn
-import com.fonrouge.library.apiServices.AppApi
-import com.fonrouge.library.domain.BasePagingSource
 import com.fonrouge.fsLib.model.apiData.ApiList
 import com.fonrouge.fsLib.model.apiData.IApiFilter
 import com.fonrouge.fsLib.model.base.BaseDoc
 import com.fonrouge.fsLib.model.state.ListState
 import com.fonrouge.fsLib.model.state.SimpleState
+import com.fonrouge.library.apiServices.AppApi
+import com.fonrouge.library.domain.BasePagingSource
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
 import kotlinx.serialization.InternalSerializationApi
@@ -37,7 +37,7 @@ abstract class ViewModelPagingData<T : BaseDoc<*>, FILT : IApiFilter> : ViewMode
     val refreshingList: MutableState<Boolean> = mutableStateOf(false)
     var requestRefresh by mutableStateOf(false)
     val refreshByFilter = mutableStateOf(false)
-    abstract val apiFilter: MutableState<FILT>
+    abstract val apiFilter: MutableState<FILT* update?>
     abstract val listStateFunc: KSuspendFunction1<ApiList<FILT>, ListState<T>>
     open val onBeforeListStateGet: (() -> Unit)? = null
 
